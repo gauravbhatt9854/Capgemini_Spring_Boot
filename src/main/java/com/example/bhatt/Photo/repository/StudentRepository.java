@@ -1,10 +1,13 @@
 package com.example.bhatt.Photo.repository;
 
 import com.example.bhatt.Photo.entity.Student;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
 
 import java.util.List;
 
@@ -16,5 +19,8 @@ public interface StudentRepository extends JpaRepository<Student , Long> {
 
     @Query("select s from Student s where s.email= ?1")
     Student findByEmailAddress(@Param("email") String email);
+
+    @Query(value = "select * from student_table" , nativeQuery = true)
+    Page<Student> findAllStudentsWithPage(Pageable pageable);
 
 }

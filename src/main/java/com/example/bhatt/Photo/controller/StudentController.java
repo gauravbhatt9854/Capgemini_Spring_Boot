@@ -18,9 +18,16 @@ public class StudentController {
 
     private final StudentServiceImpl studentServiceimpl;
 
+//    @GetMapping("/students")
+//    public ResponseEntity<List<StudentDto>> getStudents() {
+//        return ResponseEntity.ok(studentServiceimpl.getAllStudents());
+//    }
+
     @GetMapping("/students")
-    public ResponseEntity<List<StudentDto>> getStudents() {
-        return ResponseEntity.ok(studentServiceimpl.getAllStudents());
+    public ResponseEntity<List<StudentDto>>
+    getStudentsWithPage(@RequestParam(defaultValue = "0") Integer page ,
+                        @RequestParam(defaultValue = "10") Integer size) {
+        return ResponseEntity.ok(studentServiceimpl.getAllStudentsWithPage(page , size));
     }
 
     @GetMapping("/student/{id}")

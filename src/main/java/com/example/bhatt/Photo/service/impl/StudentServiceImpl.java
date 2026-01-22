@@ -8,9 +8,14 @@ import com.example.bhatt.Photo.service.StudentService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,12 +39,25 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentDto> getAllStudents() {
-        List<StudentDto> ans = studentRepository.findAll()
+        List<StudentDto> ans =
+                studentRepository.findAll()
                 .stream()
                 .map(student -> new StudentDto(student.getId(),
                         student.getName(), student.getAge(), student.getEmail()))
                 .toList();
         return ans;
+    }
+
+
+    @Override
+    public List<StudentDto> getAllStudentsWithPage(Integer page , Integer size) {
+        Pageable pageable = PageRequest.of(page , size , Sort.by("name"));
+        Page<Student> students = studentRepository.findAllStudentsWithPage(pageable);
+        List<StudentDto> list = new ArrayList<>();
+        for(Student student : students){
+            list.add(modelMapper.map(student , StudentDto.class));
+        }
+        return list;
     }
 
     @Override
