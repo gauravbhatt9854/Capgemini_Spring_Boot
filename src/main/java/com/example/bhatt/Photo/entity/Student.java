@@ -26,4 +26,8 @@ public class Student {
     private String name;
     private String email;
     private byte age;
+
+    @OneToOne
+    @JoinColumn(name = "students_admission_id")
+    private Admission admission;
 }
